@@ -1,2 +1,9 @@
 ---
-# defaults file for esolitos.docker-jackett
+jackett_user: jackett
+jackett_group: "{{ jackett_user }}"
+jackett_volume_data: "/home/{{ jackett_user }}/data"
+jackett_volume_config: "/home/{{ jackett_user }}/config"
+jackett_image_tag: "latest"
+jackett_run_opts: "--ListenPublic --NoRestart --NoUpdates"
+jackett_expose_port_ip: "127.0.0.1"
+jackett_expose_port: "9117"

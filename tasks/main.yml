@@ -1,2 +1,34 @@
 ---
-# tasks file for esolitos.docker-jackett
+# tasks file for esolitos.jackett-docker
+-
+  name: Create user for containers
+  user:
+    name: "{{ jackett_user }}"
+    group: "{{ jackett_group }}"
+    system: yes
+-
+  name: Create mounts for jackett container
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0775"
+    group: "{{ jackett_user }}"
+    owner: "{{ jackett_group }}"
+  with_items:
+    - "{{ jackett_volume_data }}"
+    - "{{ jackett_volume_config }}"
+-
+  name: Start
+  docker_container:
+    name: jackett
+    image: "esolitos/jackett:{{ jackett_image_tag }}"
+    command: "mono --debug /var/app/JackettConsole.exe {{ jackett_run_opts }}"
+    detach: yes
+    user: "{{ jackett_user }}:{{ jackett_group  }}"
+    ports:
+      - "{{ jackett_expose_port_ip }}:{{ jackett_expose_port }}:9117"
+    restart_policy: 'unless-stopped'
+    restart_retries: 3
+    volumes:
+      - "{{ jackett_volume_data }}:/mnt/data"
+      - "{{ jackett_volume_config }}:/mnt/config"
