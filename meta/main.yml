@@ -4,6 +4,7 @@ dependencies:
 
 galaxy_info:
   author: Esolitos
+  role_name: docker_jackett
   description: "Configres and install Jackett/Jackett via docker"
   license: "license (MIT)"
   min_ansible_version: 2.5
